@@ -1,0 +1,94 @@
+                 print(f"Deposited {amount} successfully.")
+            else:
+                print("Invalid Denomination.")
+            if self.balance < 75000:
+                print("\t*** Notification: Balance is less than 75,000. ***")
+        else:
+            print("Invalid deposit amount or denomination.")
+
+    def withdraw(self,amount): # Function for withdraw
+        if amount % 100 == 0 and amount <= 500000:
+            if self.balance >= amount:
+                self.balance -= amount
+                denom_list=denomination(amount)        # denomination on withdrawal
+                d_amnt=0
+                for i in denom_list.keys():
+	                d_amnt+= i*(denom_list[i]) 
+	                print(f"{i} * {denom_list[i]} = {i*denom_list[i]}")	
+                print("Total Amount: ",d_amnt)
+                print("Withdrew successfully.")
+                if self.balance<75000:      # Notification if minimum balance reached
+                    print("\t*** Notification: Maintain Minimum Balance of 75000 ***")
+            else:
+                print("Insufficient balance.")
+        else:
+            print("Invalid withdrawal amount or denomination.")
+
+admins ={}   # dictionary to maintain admin details 
+
+def admin_main(): # Admin functions 
+    admin_id = input("Enter Admin ID: ")
+    if admin_id in admins: # check valid admin id
+        count=3
+        while count>0:    # if password is wrong three times
+            password = input("Enter Password: ")
+            if admins[admin_id] == password: # Admin functions
+                while True:                                
+                    print("\n\t\t**** Admin Menu ****")
+                    print("1. Total Balance")
+                    print("2. Deposit Cash")
+                    print("3. Withdraw Cash")
+                    print("4. Logout")
+                    admin_choice = input("Enter your choice: ")
+                    if admin_choice == '1':
+                        print(admin.total_balance())
+                    elif admin_choice == '2':
+                        amount = int(input("Enter the deposit amount: "))
+                        admin.deposit_cash(amount)
+                    elif admin_choice == '3':
+                        amount=int(input("Enter the Withdraw amount: "))
+                        admin.withdraw(amount)
+                    elif admin_choice == '4':
+                        print("\n\t<----> Admin Loged Out <---->\n")
+                        count=-1
+                        break
+                    else:
+                        print("Invalid choice. Please try again.")
+            else:
+                count-=1
+                if count==0:
+                    print("!!!! To Many worng attemps. Account Locked !!!! ")
+                else:
+                    print("Wrong password. Attempt remain: ",count)
+    else:
+        print("!!!! Wrong Admin Id !!!!")
+
+''' Main program '''
+if __name__=='__main__':
+    print('\n\t\t*** Welcome To The ATM ***')
+    print(" New Admin Account ")
+    admin_id = input("Enter Admin ID: ")
+    admin_pass = input("Enter Admin Password: ")
+    admin_ammount = int(input("Enter Balance for Admin (Rs100-5L): "))
+    admins.update({admin_id : admin_pass})
+    admin = Admin(admin_id,admin_pass,admin_ammount)
+    while True:
+        print("\t**** Main Menu ****")
+        print("1. User\n2. Admin\n3.Exit")
+        choice = input("Enter your choice: ")
+
+        if choice=='1': # Open user functions/file
+                        
+            val=user_main()
+            if val==0:
+                break       
+        elif choice=='2': # Open admin functions/file
+                        
+            val=admin_main()
+            if val==0:
+                break
+        elif choice=='3':    # Exit the program
+            print("\n\t**** Thanks for using our services ****\n\t**** Exit ATM Program ****")
+            break
+        else:          # Wrong input/choice
+            print("\n\t<----> Invalid choice! <---->\n\t<--> Enter from given options <-->")               
